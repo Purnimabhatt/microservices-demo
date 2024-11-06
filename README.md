@@ -117,5 +117,12 @@ Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
    ```
 
    Deleting the cluster may take a few minutes.
-# microservices-demo
-Demo project for micro services
+# Monitoring
+To enable application monitoring for a new cluster, do the following steps: 
+1. Go to the Google Kubernetes Engine page in the Google Cloud console.
+2. Click **+ Create** then in the Standard or Autopilot section, click Configure.
+3. For an Autopilot mode cluster, click **Advanced settings**. For a Standard mode cluster, click **Features**.
+4. In the **Operations** section, select Enable **automatic application monitoring**.
+5. Click **Create**.
+
+
