@@ -125,4 +125,17 @@ To enable application monitoring for a new cluster, do the following steps:
 4. In the **Operations** section, select Enable **automatic application monitoring**.
 5. Click **Create**.
 
+**You can identify the PodMonitoring resource that GKE created for a workload using the Google Cloud console:**
+1. Go to the **Object browser** page.
+
+2. In the **Cluster** field, enter the name of the cluster.
+
+3. In the N**amespace** field, enter the name of the namespace.
+
+4. In the **Object Kinds** filter, select **PodMonitoring**.
+
+5. Under **monitoring.googleapis.com**, select **PodMonitoring**.
+
+6. Click an object name to inspect the object. The metadata label source:gke-auto-monitoring indicates that GKE created the PodMonitoring resource.
+
 
