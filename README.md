@@ -55,8 +55,6 @@ Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
    cd microservices-demo/
    ```
 
-   The `--depth 1` argument skips downloading git history.
-
 3. Set the Google Cloud project and region and ensure the Google Kubernetes Engine API is enabled.
 
    ```sh
