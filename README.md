@@ -105,7 +105,7 @@ Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
    kubectl get service frontend-external | awk '{print $4}'
    ```
 
-   Visit `http://EXTERNAL_IP` in a web browser to access your instance of Online Boutique.
+   Visit `http://34.57.179.207` in a web browser to access your instance of Online Boutique.
 
 8. Deployment is completed for the project.
 
