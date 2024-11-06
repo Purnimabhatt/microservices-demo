@@ -6,11 +6,6 @@
 **Online Boutique** is a cloud-first microservices demo application.  The application is a
 web-based e-commerce app where users can browse items, add them to the cart, and purchase them.
 
-Google uses this application to demonstrate how developers can modernize enterprise applications using Google Cloud products, including: [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine).
-
-If you’re using this demo, please **★Star** this repository to show your interest!
-
-
 ## Architecture
 
 **Online Boutique** is composed of 11 microservices written in different
