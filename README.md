@@ -51,7 +51,7 @@ Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
 2. Clone the latest major version.
 
    ```sh
-   git clone --depth 1 --branch v0 https://github.com/GoogleCloudPlatform/microservices-demo.git
+   git clone https://github.com/Purnimabhatt/microservices-demo.git
    cd microservices-demo/
    ```
 
