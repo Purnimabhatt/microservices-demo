@@ -1,67 +1,72 @@
-name: Continuous Integration Pipeline
+name: Go CI Pipeline
 
-# Trigger the CI on push to specific branches and pull requests
+# Trigger the CI pipeline on push and pull request events
 on:
   push:
     branches:
-      - main
-      - 'feature/*'  # Optional, if you want to run on feature branches
+      - main         # Runs on push to the main branch
+      - 'feature/*'  # Runs on push to any feature branch
   pull_request:
     branches:
-      - main
+      - main         # Runs on pull request targeting the main branch
 
 jobs:
-  # Job to run the CI pipeline
+  # Define the build job
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    # The environment in which the job will run (Ubuntu)
 
     steps:
       # Step 1: Checkout the repository
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3   # Checkout the code from the repo
 
-      # Step 2: Set up Node.js (you can adapt this step for other languages)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      # Step 2: Set up Go environment (latest version)
+      - name: Set up Go
+        uses: actions/setup-go@v3
         with:
-          node-version: '20'
+          go-version: '1.20'  # Specify the version of Go you want to use
 
-      # Step 3: Install dependencies
-      - name: Install Dependencies
-        run: npm install
+      # Step 3: Cache Go modules to speed up subsequent builds (optional but recommended)
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
-      # Step 4: Run Static Code Analysis (e.g., ESLint)
-      - name: Lint Code
-        run: npm run lint
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: go mod tidy   # Runs 'go mod tidy' to ensure dependencies are correctly fetched
 
-      # Step 5: Run Unit Tests
-      - name: Run Tests
-        run: npm test
+      # Step 5: Run tests
+      - name: Run tests
+        run: go test -v ./...  # Runs 'go test' to execute your tests (all tests in the repo)
 
-      # Step 6: Build Application (optional, depending on your project)
-      - name: Build Application
-        run: npm run build
+      # Step 6: Build the Go application (optional, depending on your project)
+      - name: Build application
+        run: go build -o myapp ./cmd/myapp  # Replace with your build command if different
 
-      # Step 7: Deploy to Staging (optional)
-      # This can be skipped or tailored to your specific needs
+      # Step 7: Deploy to staging (optional, depends on your deployment setup)
       - name: Deploy to Staging
         run: |
-          echo "Deploying to Staging Environment"
-          # Add your deploy script/command here (e.g., AWS CLI, Azure CLI, Docker)
+          echo "Deploying to Staging environment..."
+          # Add your deployment script/commands here (e.g., Docker, Kubernetes, etc.)
 
-      # Step 8: Post Build Actions (Optional, for notifications)
+      # Step 8: Notify Slack (optional, can be used for notifications)
       - name: Notify Slack on Success
-        if: success()
+        if: success()  # Only runs if the pipeline succeeds
         uses: slackapi/slack-github-action@v1
         with:
-          slack-token: ${{ secrets.SLACK_API_TOKEN }}
-          channel: '#ci-updates'
-          message: 'Build and tests completed successfully!'
+          slack-token: ${{ secrets.SLACK_API_TOKEN }}  # Slack token stored in GitHub secrets
+          channel: '#ci-updates'                      # Slack channel for notifications
+          message: 'CI Build Succeeded: All tests passed and build is successful!'  # Success message
 
-      # Step 9: Save Artifacts (optional)
-      - name: Upload Build Artifact
-        if: success()
+      # Step 9: Upload build artifacts (optional)
+      - name: Upload Build Artifacts
+        if: success()  # Only runs if the build and tests pass
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifact
-          path: ./build
+          name: build-artifacts  # The name for the artifact
+          path: ./myapp          # Path to the build output (adjust according to your project)
+
