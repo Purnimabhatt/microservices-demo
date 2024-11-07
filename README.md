@@ -143,6 +143,14 @@ To enable application monitoring for a new cluster, do the following steps:
 2. **Network Security**: Implement a Service Mesh Istio to control and monitor inter-service communication. Istio provides features like mutual TLS for secure pod-to-pod communication, traffic encryption, and access control between services.
 3. **Container Security:** Use the trusted image and doing image scaning
 4. **Role-Based Access Control (RBAC)**: Use RBAC to restrict the cluster role and enable audit login.
+
+# Create a Docker Image:
+1. Create a yml pipeline
+2. Host in git Action
+3. Push image in docker.
+For details please see git action workflow
+https://github.com/Purnimabhatt/docker/actions/workflows/docker-push.yml 
+
    
 
 
