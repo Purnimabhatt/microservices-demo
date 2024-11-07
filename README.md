@@ -138,4 +138,11 @@ To enable application monitoring for a new cluster, do the following steps:
 
 6. Click an object name to inspect the object. The metadata label source:gke-auto-monitoring indicates that GKE created the PodMonitoring resource.
 
+# Security
+1. **Identity and Access Management (IAM)**: Assign the minimum required permissions to users, service accounts, and Kubernetes resources
+2. **Network Security**: Implement a Service Mesh Istio to control and monitor inter-service communication. Istio provides features like mutual TLS for secure pod-to-pod communication, traffic encryption, and access control between services.
+3. **Container Security:** Use the trusted image and doing image scaning
+4. **Role-Based Access Control (RBAC)**: Use RBAC to restrict the cluster role and enable audit login.
+   
+
 
