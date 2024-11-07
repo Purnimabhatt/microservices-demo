@@ -36,7 +36,7 @@ Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
 | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | [![Screenshot of store homepage](/docs/img/online-boutique-frontend-1.png)](/docs/img/online-boutique-frontend-1.png) | [![Screenshot of checkout screen](/docs/img/online-boutique-frontend-2.png)](/docs/img/online-boutique-frontend-2.png) |
 
-## Quickstart (GKE)
+## Infrastructure as Code
 
 1. Ensure you have the following requirements:
    - [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
