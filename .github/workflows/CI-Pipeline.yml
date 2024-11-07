@@ -1,0 +1,67 @@
+name: Continuous Integration Pipeline
+
+# Trigger the CI on push to specific branches and pull requests
+on:
+  push:
+    branches:
+      - main
+      - 'feature/*'  # Optional, if you want to run on feature branches
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job to run the CI pipeline
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js (you can adapt this step for other languages)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 4: Run Static Code Analysis (e.g., ESLint)
+      - name: Lint Code
+        run: npm run lint
+
+      # Step 5: Run Unit Tests
+      - name: Run Tests
+        run: npm test
+
+      # Step 6: Build Application (optional, depending on your project)
+      - name: Build Application
+        run: npm run build
+
+      # Step 7: Deploy to Staging (optional)
+      # This can be skipped or tailored to your specific needs
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to Staging Environment"
+          # Add your deploy script/command here (e.g., AWS CLI, Azure CLI, Docker)
+
+      # Step 8: Post Build Actions (Optional, for notifications)
+      - name: Notify Slack on Success
+        if: success()
+        uses: slackapi/slack-github-action@v1
+        with:
+          slack-token: ${{ secrets.SLACK_API_TOKEN }}
+          channel: '#ci-updates'
+          message: 'Build and tests completed successfully!'
+
+      # Step 9: Save Artifacts (optional)
+      - name: Upload Build Artifact
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ./build
