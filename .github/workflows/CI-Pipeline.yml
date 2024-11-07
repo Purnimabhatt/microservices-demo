@@ -1,72 +1,31 @@
-name: Java CI Pipeline
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-# Trigger the CI pipeline on push and pull request events
+name: Node.js CI
+
 on:
   push:
-    branches:
-      - main         # Runs on push to the main branch
-      - 'feature/*'  # Runs on push to any feature branch
+    branches: [ develop ]
   pull_request:
-    branches:
-      - main         # Runs on pull request targeting the main branch
+    branches: [ develop ]
 
 jobs:
-  # Define the build job
   build:
-    runs-on: ubuntu-latest    # The environment in which the job will run (Ubuntu)
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3   # Checkout the code from the repo
-
-      # Step 2: Set up Java (OpenJDK 11 as an example)
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'  # Specify the Java version you need
-          distribution: 'adoptopenjdk'  # You can use other distributions like 'openjdk' or 'zulu'
-
-      # Step 3: Cache Maven dependencies to speed up subsequent builds (optional but recommended)
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository  # Maven cache directory
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      # Step 4: Install dependencies and build the application
-      - name: Build with Maven
-        run: mvn clean install -DskipTests=true  # Skips tests during the build to speed up CI
-
-      # Step 5: Run tests
-      - name: Run tests
-        run: mvn test  # Runs tests defined in the project
-
-      # Step 6: Build the project (generate the JAR, WAR, or other artifacts)
-      - name: Package application
-        run: mvn package  # Builds the project and generates the output artifact (JAR/WAR)
-
-      # Step 7: Deploy to Staging (optional, depends on your deployment setup)
-      - name: Deploy to Staging
-        run: |
-          echo "Deploying to Staging environment..."
-          # Add your deployment script/commands here (e.g., Docker, Kubernetes, AWS CLI)
-
-      # Step 8: Notify Slack (optional, can be used for notifications)
-      - name: Notify Slack on Success
-        if: success()  # Only runs if the pipeline succeeds
-        uses: slackapi/slack-github-action@v1
-        with:
-          slack-token: ${{ secrets.SLACK_API_TOKEN }}  # Slack token stored in GitHub secrets
-          channel: '#ci-updates'                      # Slack channel for notifications
-          message: 'CI Build Succeeded: All tests passed and build is successful!'  # Success message
-
-      # Step 9: Upload build artifacts (optional)
-      - name: Upload Build Artifacts
-        if: success()  # Only runs if the build and tests pass
-        uses: actions/upload-artifact@v3
-        with:
-          name: java-build-artifacts  # The name for the artifact
-          path: ./target/*.jar        # Path to the build output (adjust according to your project)
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
